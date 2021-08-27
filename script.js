@@ -6,7 +6,7 @@ canvas.height = window.innerHeight * 0.99;
 
 canvas.onmousedown = canvasClick;
 window.onmouseup = mouseUp;
-canvas.onmousemove = dragCircle;
+canvas.onmousemove = dragFigure;
 
 let previousSelectedFigure;
 let isEnter;
@@ -14,15 +14,15 @@ let isDragging = false;
 let initialState = [{
     x: window.innerWidth * 0.2,
     y: window.innerHeight * 0.25,
-    radiusX: 100,
-    radiusY: 50,
+    radiusX: window.innerWidth * 0.05,
+    radiusY: window.innerHeight * 0.05,
     isSelected: false,
     figure: 'elipse'
 }, {
     x: window.innerWidth * 0.15,
     y: window.innerHeight * 0.4,
-    w: 200,
-    h: 100,
+    w: window.innerWidth * 0.1,
+    h: window.innerHeight * 0.1,
     isSelected: false,
     figure: 'rect'
 }];
@@ -34,6 +34,7 @@ if (localStorage.figures) {
             figure.isSelected = false
         }
     })
+    figures.splice(0, 1, { ...initialState[0] }, { ...initialState[1] })
 } else figures = [{ ...initialState[0] }, { ...initialState[1] }]
 
 drawFigures();
@@ -95,7 +96,7 @@ document.addEventListener('keydown', event => {
     }
 })
 
-function dragCircle(event) {
+function dragFigure(event) {
     if (previousSelectedFigure != null) {
         if (previousSelectedFigure.figure == 'elipse') {
             if (event.pageX - canvas.offsetLeft < window.innerWidth * 0.3 + previousSelectedFigure.radiusX ||
